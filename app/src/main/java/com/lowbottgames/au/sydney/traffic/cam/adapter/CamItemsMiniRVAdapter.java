@@ -1,17 +1,16 @@
 package com.lowbottgames.au.sydney.traffic.cam.adapter;
 
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.lowbottgames.au.sydney.traffic.cam.R;
 import com.lowbottgames.au.sydney.traffic.cam.TCSHelper;
 import com.lowbottgames.au.sydney.traffic.cam.domain.CamItem;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 public class CamItemsMiniRVAdapter extends RecyclerView.Adapter<CamItemsMiniRVAdapter.CamItemsRVViewHolder> {
@@ -28,14 +27,12 @@ public class CamItemsMiniRVAdapter extends RecyclerView.Adapter<CamItemsMiniRVAd
     public void onBindViewHolder(final CamItemsRVViewHolder holder, int position) {
         CamItem item = items[position];
 
-        Context context = holder.itemView.getContext();
-
         holder.textViewTitle.setText(item.camName);
         holder.textViewSubtitle.setText(item.camDirection);
 
         String url = TCSHelper.getImageURLString(item.camID);
 
-        Picasso.with(context)
+        Picasso.get()
                 .load(url)
 //                .networkPolicy(NetworkPolicy.OFFLINE)
                 .into(holder.imageView);

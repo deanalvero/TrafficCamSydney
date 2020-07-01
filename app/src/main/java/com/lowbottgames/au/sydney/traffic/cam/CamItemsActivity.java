@@ -2,19 +2,17 @@ package com.lowbottgames.au.sydney.traffic.cam;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lowbottgames.au.sydney.traffic.cam.adapter.CamItemsRVAdapter;
 import com.lowbottgames.au.sydney.traffic.cam.domain.CamItem;
@@ -56,9 +54,6 @@ public class CamItemsActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        boolean flag = sharedPreferences.getBoolean("list_display_images_preference", true);
-
         camItemsRVAdapter = new CamItemsRVAdapter();
         camItemsRVAdapter.setItems(placeItem.camItem);
         camItemsRVAdapter.setOnCamItemsRVAdapterListener(new CamItemsRVAdapter.OnCamItemsRVAdapterListener() {
@@ -67,18 +62,13 @@ public class CamItemsActivity extends AppCompatActivity {
                 startActivity(CamItemActivity.newIntent(CamItemsActivity.this, camItem));
             }
         });
-//        camItemsRVAdapter.setShowCamItemImages(flag);
 
-//        if (flag) {
-            Configuration configuration = getResources().getConfiguration();
-            if (configuration != null && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-            }
-//        } else {
-//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        }
+        Configuration configuration = getResources().getConfiguration();
+        if (configuration != null && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        }
 
         recyclerView.setAdapter(camItemsRVAdapter);
         recyclerView.setHasFixedSize(true);
@@ -105,7 +95,7 @@ public class CamItemsActivity extends AppCompatActivity {
     private void invalidateImages(final PlaceItem placeItem) {
         if (placeItem != null) {
             for (CamItem camItem: placeItem.camItem) {
-                Picasso.with(this).invalidate(TCSHelper.getImageURLString(camItem.camID));
+                Picasso.get().invalidate(TCSHelper.getImageURLString(camItem.camID));
             }
         }
     }

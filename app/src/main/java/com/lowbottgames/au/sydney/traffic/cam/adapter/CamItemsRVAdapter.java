@@ -1,24 +1,23 @@
 package com.lowbottgames.au.sydney.traffic.cam.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.lowbottgames.au.sydney.traffic.cam.R;
 import com.lowbottgames.au.sydney.traffic.cam.TCSHelper;
 import com.lowbottgames.au.sydney.traffic.cam.domain.CamItem;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 public class CamItemsRVAdapter extends RecyclerView.Adapter<CamItemsRVAdapter.CamItemsRVViewHolder> {
 
     private CamItem[] items;
     private OnCamItemsRVAdapterListener onCamItemsRVAdapterListener;
-    private boolean showCamItemImages;
 
     @Override
     public CamItemsRVViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,23 +28,15 @@ public class CamItemsRVAdapter extends RecyclerView.Adapter<CamItemsRVAdapter.Ca
     public void onBindViewHolder(final CamItemsRVViewHolder holder, int position) {
         final CamItem item = items[position];
 
-        Context context = holder.itemView.getContext();
-
         holder.textViewTitle.setText(item.camName);
         holder.textViewSubtitle.setText(item.camDirection);
 
-//        if (showCamItemImages) {
-//            holder.imageView.setVisibility(View.VISIBLE);
+        String url = TCSHelper.getImageURLString(item.camID);
 
-            String url = TCSHelper.getImageURLString(item.camID);
-
-            Picasso.with(context)
-                    .load(url)
+        Picasso.get()
+                .load(url)
 //                .networkPolicy(NetworkPolicy.OFFLINE)
-                    .into(holder.imageView);
-//        } else {
-//            holder.imageView.setVisibility(View.GONE);
-//        }
+                .into(holder.imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,10 +60,6 @@ public class CamItemsRVAdapter extends RecyclerView.Adapter<CamItemsRVAdapter.Ca
     public void setItems(CamItem[] items) {
         this.items = items;
     }
-
-//    public void setShowCamItemImages(boolean showCamItemImages) {
-//        this.showCamItemImages = showCamItemImages;
-//    }
 
     static class CamItemsRVViewHolder extends RecyclerView.ViewHolder {
 
